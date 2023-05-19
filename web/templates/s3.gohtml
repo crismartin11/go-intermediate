@@ -1,0 +1,77 @@
+{{template "header" .}}
+
+    <div class="container text-center">
+    
+        {{if .IsAuthenticated}}
+            <div class="row">
+
+                <div class="col">
+                    
+                    <div>Listado de buckets</div>
+                    <form action="/s3Buckets" method="get">
+                        <input type="submit" value="Listar">
+                    </form>
+
+                    {{if .Buckets}}
+                    <div>
+                        {{range .Buckets}}<div>{{ .Name }}</div>{{else}}<div><strong>Lista vacía</strong></div>{{end}}
+                        </div>
+                    {{end}}
+
+                </div>
+                <div class="col">
+                    
+                    <div>Listado de objetos</div>
+                    <form action="/s3Objects" method="post">
+                        <input type="text" name="bucketname" placeholder="Nombre bucket">
+                        <input type="submit" value="Listar">
+                    </form>
+
+                    {{if .Objects}}
+                        {{range .Objects}}<div>{{ .Name }}</div>{{else}}<div><strong>Lista vacía</strong></div>{{end}}
+                    {{end}}
+
+                </div>
+                <div class="col">
+                    
+                    <div>Crear bucket</div>
+                    <form action="/s3Create" method="post">
+                        <input type="text" name="bucketname" placeholder="Nombre bucket">
+                        <input type="submit" value="Crear">
+                    </form>
+
+                    {{if .Created}}
+                        <div><strong>Bucket creado</strong></div>
+                    {{end}}
+
+                </div>
+                <div class="col">
+                    
+                    <div>Subir objeto (filetest.txt existente)</div>
+                    <form action="/s3Upload" method="post">
+                        <input type="text" name="bucketname" placeholder="Nombre bucket destino">
+                        <input type="text" name="objectname" placeholder="Nombre objeto">
+                        <input type="submit" value="Subir">
+                    </form>
+
+                    {{if .Uploaded}}
+                        <div><strong>Objeto subido</strong></div>
+                    {{end}}
+
+                </div>
+            </div>
+            <div class="row">
+                {{if .Err}}
+                    <div><strong>{{ .Err }}</strong></div>
+                {{end}}
+            </div>
+
+        {{else}}
+            <div class="row">
+                <div>Debe autenticarse</div>
+            </div>
+        {{end}}
+        
+    </div>
+
+{{template "footer"}}

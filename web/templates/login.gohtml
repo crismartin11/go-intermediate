@@ -1,0 +1,45 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  
+  <script src="https://global.oktacdn.com/okta-signin-widget/5.2.0/js/okta-sign-in.min.js" type="text/javascript"></script>
+  <link href="https://global.oktacdn.com/okta-signin-widget/5.2.0/css/okta-sign-in.min.css" type="text/css" rel="stylesheet"/>
+  
+  <title>Golang - Intermediate</title>
+</head>
+<body id="samples">
+
+    <div>-Login-</div>
+
+
+    <div id="sign-in-widget"></div>
+
+
+    <script type="text/javascript>
+
+      var config = {};
+      config.baseUrl = "http://localhost:8080";
+      config.clientId = "0oa99c7p1ohCu5uRd5d7";
+      config.redirectUri = "http://localhost:8080/authorization-code/callback";
+      config.authParams = {
+        issuer: "https://dev-09861804-admin.okta.com/oauth2/default",
+        responseType: 'code',
+        state: false,
+        display: 'page',
+        scopes: ['openid', 'profile', 'email'],
+        nonce: '458464548',
+        pkce: false,
+      };
+
+      new OktaSignIn(config).renderEl(
+        { el: "#sign-in-widget"},  // Renderiza en el div de arriba
+        function (res) {
+            console.log("res", res);
+        }
+      );
+
+    </script>
+
+</body>

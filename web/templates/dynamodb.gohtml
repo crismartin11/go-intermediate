@@ -1,0 +1,75 @@
+{{template "header" .}}
+
+    <div class="container text-center">
+
+        {{if .IsAuthenticated}}
+            <div class="row">
+                <div class="col">
+
+                    <div>Listado de usuarios</div>
+                    <form action="/dynamoUsers" method="get">
+                        <input type="submit" value="Listar">
+                    </form>
+
+                    {{if .Users}}
+                        {{range .Users}}<div>{{ .UserName }} - {{ .Email }}</div>{{else}}<div><strong>Lista vacía</strong></div>{{end}}
+                    {{end}}
+
+                </div>
+                <div class="col">
+
+                    <div>Crear usuario</div>
+                    <form action="/dynamoCreate" method="post">
+                        <input type="text" name="username" placeholder="Nombre">
+                        <input type="text" name="email" placeholder="Email">
+                        <input type="submit" value="Crear">
+                    </form>
+
+                    {{if .Created}}
+                        <div><strong>Usuario creado</strong></div>
+                    {{end}}
+
+                </div>
+                <div class="col">
+
+                    <div>Actualizar email</div>
+                    <form action="/dynamoUpdate" method="post">
+                        <input type="text" name="username" placeholder="Nombre">
+                        <input type="text" name="email" placeholder="Nuevo Email">
+                        <input type="submit" value="Actualizar">
+                    </form>
+
+                    {{if .Updated}}
+                        <div><strong>Usuario actualizado</strong></div>
+                    {{end}}
+                
+                </div>  
+                <div class="col">
+
+                    <div>Eliminar usuario</div>
+                    <form action="/dynamoDelete" method="post">
+                        <input type="text" name="username" placeholder="Nombre">
+                        <input type="submit" value="Eliminar">
+                    </form>
+
+                    {{if .Deleted}}
+                        <div><strong>Usuario eliminado</strong></div>
+                    {{end}}
+                
+                </div> 
+            </div>
+            <div class="row">
+                {{if .Err}}
+                    <div><strong>{{ .Err }}</strong></div>
+                {{end}}
+            </div>
+
+        {{else}}
+            <div class="row">
+                <div>Debe autenticarse</div>
+            </div>
+        {{end}}
+
+    </div>
+
+{{template "footer"}}
