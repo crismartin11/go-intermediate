@@ -35,8 +35,6 @@ func setEnvVariable(env string, current string) {
 		return // Si current ya está seteado, retorno
 	}
 
-	log.Printf("Leo archivo...")
-
 	file, _ := os.Open(".env")
 	defer file.Close()
 
