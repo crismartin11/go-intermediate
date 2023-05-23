@@ -9,6 +9,8 @@ Pasos para ejecutar en ambiente local:
 
 3- Ejecutar el comando "start" configurado en la sección de scripts de package.json
 
+4- Ingresar a la url localhost:8080
+
 
 Opcionalmente se puede ejecutar el comando "test" para ejecutar los unit test contenidos en el directorio "test", y se puede ejecutar el comando "build" para construir la aplicación.
 
