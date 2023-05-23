@@ -3,8 +3,9 @@ package dynamodb
 import (
 	"fmt"
 
+	"go-intermediate/pkg/credentials"
+
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
@@ -30,7 +31,7 @@ type User struct {
 }
 
 func (db DynamoDBClient) ListUsers() ([]User, error) {
-	service := getClient()
+	service := credentials.GetClientDynamo()
 	users := []User{}
 
 	// Con la proyección obtengo el UserName e Email de cada elemento recuperado
@@ -72,7 +73,7 @@ func (db DynamoDBClient) ListUsers() ([]User, error) {
 }
 
 func (db DynamoDBClient) Create(username string, email string) (bool, error) {
-	service := getClient()
+	service := credentials.GetClientDynamo()
 	user := User{UserName: username, Email: email}
 
 	// Parseo cada ítems de Go Types a DynamoDB attributes values
@@ -97,7 +98,7 @@ func (db DynamoDBClient) Create(username string, email string) (bool, error) {
 }
 
 func (db DynamoDBClient) Update(username string, email string) (bool, error) {
-	service := getClient()
+	service := credentials.GetClientDynamo()
 
 	// Creo el ítem a actualizar en la tabla Users
 	input := &dynamodb.UpdateItemInput{
@@ -126,7 +127,7 @@ func (db DynamoDBClient) Update(username string, email string) (bool, error) {
 }
 
 func (db DynamoDBClient) Delete(username string) (bool, error) {
-	service := getClient()
+	service := credentials.GetClientDynamo()
 
 	// Creo el ítem a eliminar en la tabla Users
 	input := &dynamodb.DeleteItemInput{
@@ -145,15 +146,4 @@ func (db DynamoDBClient) Delete(username string) (bool, error) {
 	}
 
 	return true, nil
-}
-
-func getClient() *dynamodb.DynamoDB {
-	// Creo sesión tomando credenciales y región de ~/.aws/credentials y ~/.aws/config
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
-
-	// Creo cliente de DynamoDB
-	service := dynamodb.New(sess)
-	return service
 }

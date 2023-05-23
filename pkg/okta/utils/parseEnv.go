@@ -7,16 +7,19 @@ import (
 	"strings"
 )
 
+// Si las variables de entorno no existen en el sistema, las toma de .env
 func ParseEnvironment() {
 	// Valido si .env existe
 	if _, err := os.Stat(".env"); os.IsNotExist(err) {
 		log.Printf(".env no existe. Se intentará utilizar variables globales.")
 	}
 
-	// Seteo variables existentes en .env
 	setEnvVariable("CLIENT_ID", os.Getenv("CLIENT_ID"))
 	setEnvVariable("CLIENT_SECRET", os.Getenv("CLIENT_SECRET"))
 	setEnvVariable("ISSUER", os.Getenv("ISSUER"))
+	setEnvVariable("AWS_ACCESS_KEY_ID", os.Getenv("AWS_ACCESS_KEY_ID"))
+	setEnvVariable("AWS_SECRET_ACCESS_KEY", os.Getenv("AWS_SECRET_ACCESS_KEY"))
+	setEnvVariable("AWS_DEFAULT_REGION", os.Getenv("AWS_DEFAULT_REGION"))
 
 	if os.Getenv("CLIENT_ID") == "" {
 		log.Printf("Could not resolve a CLIENT_ID environment variable.")
@@ -42,10 +45,12 @@ func setEnvVariable(env string, current string) {
 	lookInFile.Split(bufio.ScanLines)
 
 	for lookInFile.Scan() {
-		parts := strings.Split(lookInFile.Text(), "=")
-		key, value := parts[0], parts[1]
-		if key == env {
-			os.Setenv(key, value)
+		if lookInFile.Text() != "" {
+			parts := strings.Split(lookInFile.Text(), "=")
+			key, value := parts[0], parts[1]
+			if key == env {
+				os.Setenv(key, value)
+			}
 		}
 	}
 

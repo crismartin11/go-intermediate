@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"go-intermediate/pkg/credentials"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -25,7 +27,7 @@ type BucketObj struct {
 }
 
 func (s3c S3Client) ListBuckets() ([]Bucket, error) {
-	service := getClient()
+	service := credentials.GetClientS3()
 	buckets := []Bucket{}
 
 	// Usando la instancia del servicio, listo los buckets
@@ -43,7 +45,7 @@ func (s3c S3Client) ListBuckets() ([]Bucket, error) {
 }
 
 func (s3c S3Client) ListObjects(bucketName string) ([]BucketObj, error) {
-	service := getClient()
+	service := credentials.GetClientS3()
 
 	objects := []BucketObj{}
 	result, err := service.ListObjectsV2(&s3.ListObjectsV2Input{
@@ -62,7 +64,7 @@ func (s3c S3Client) ListObjects(bucketName string) ([]BucketObj, error) {
 }
 
 func (s3c S3Client) CreateBucket(bucketName *string) (bool, error) {
-	service := getClient()
+	service := credentials.GetClientS3()
 
 	_, err := service.CreateBucket(&s3.CreateBucketInput{
 		Bucket: bucketName,
@@ -109,16 +111,4 @@ func (s3c S3Client) Upload(bucketname *string, filename *string) (bool, error) {
 	}
 
 	return true, nil
-}
-
-func getClient() *s3.S3 {
-	// Creo sesión tomando credenciales y región de ~/.aws/credentials y ~/.aws/config
-	session, _ := session.NewSession(&aws.Config{
-		Region: aws.String("us-east-1"),
-	})
-
-	// Instancio cliente de servicio S3
-	service := s3.New(session)
-
-	return service
 }

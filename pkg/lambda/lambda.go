@@ -3,9 +3,9 @@ package lambda
 import (
 	"fmt"
 
+	"go-intermediate/pkg/credentials"
+
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/lambda"
 	//"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 	//"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 )
@@ -29,7 +29,7 @@ type Lambda struct {
 }
 
 func (db LambdaClient) ListLambdas() ([]Lambda, error) {
-	service := getClient()
+	service := credentials.GetClientLambda()
 
 	lambdas := []Lambda{}
 	result, err := service.ListFunctions(nil)
@@ -44,16 +44,4 @@ func (db LambdaClient) ListLambdas() ([]Lambda, error) {
 
 	// lambdas := []Lambda{{Name: "l1"}, {Name: "l2"}}
 	return lambdas, nil
-}
-
-func getClient() *lambda.Lambda {
-	// Creo sesión tomando credenciales y región de ~/.aws/credentials y ~/.aws/config
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
-
-	// Create Lambda service client
-	service := lambda.New(sess)
-
-	return service
 }

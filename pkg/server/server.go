@@ -11,6 +11,10 @@ import (
 	"go-intermediate/pkg/server/handlers"
 )
 
+/*type Server struct {
+	*http.Server
+}*/
+
 var (
 	templates *template.Template
 )
@@ -23,6 +27,22 @@ func init() {
 	templates = template.Must(template.ParseGlob(wd + "/web/templates/*"))
 	utils.ParseEnvironment()
 }
+
+/*func NewServer(adr string) Server {
+	return Server{
+		&http.Server{
+			Addr:    adr,
+			Handler: nil,
+		},
+	}
+}*/
+
+/*func (s Server) Start() error {
+	if err := s.ListenAndServe(); err != http.ErrServerClosed {
+		return err
+	}
+	return nil
+}*/
 
 func Start() {
 	http.HandleFunc("/login", handlers.LoginHandler)
