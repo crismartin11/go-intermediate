@@ -6,17 +6,7 @@ import (
 	"go-intermediate/pkg/credentials"
 
 	"github.com/aws/aws-sdk-go/aws"
-	//"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	//"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 )
-
-/*var (
-	tableNameUsers string
-)*/
-
-/*func init() {
-	tableNameUsers = "Users"
-}*/
 
 type LambdaClient struct{}
 
